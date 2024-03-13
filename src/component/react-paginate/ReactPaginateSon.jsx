@@ -3,14 +3,22 @@ import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { storeContext } from '../../context/storeContext';
 import MyVerticallyCenteredModal from '../goSignIn/GoSignIn';
+import BigLoader from '../BigLoader/BigLoader';
 
 export default function ReactPaginateSon({ item, arrIdWish, refetch }) {
   let x = useNavigate();
   
   const [modalShow, setModalShow] = useState(false);
   let [load, setLoad] = useState(1);
-  let { setCounter, addToCart, setWishlistCounter, DeleteWishlist ,addToWishlist} =
-    useContext(storeContext);
+  let {
+    setCounter,
+    addToCart,
+    setWishlistCounter,
+    DeleteWishlist,
+    addToWishlist,
+    block,
+    setBlock,
+  } = useContext(storeContext);
 const [isOnline, setIsOnline] = useState(navigator.onLine);
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
@@ -88,20 +96,24 @@ const [isOnline, setIsOnline] = useState(navigator.onLine);
       );
     }
   }
-async function addToWash(productId) {
+  async function addToWash(productId) {
+  setBlock('block')
   let { data } = await addToWishlist(productId);
-  if (data?.status == "success") {
-    toast.success("Product added successfully");
-    setWishlistCounter(data?.data?.length);
-    refetch();
+    if (data?.status == "success") {
+      toast.success("Product added successfully");
+      setWishlistCounter(data?.data?.length);
+      await refetch();
+      await setBlock("none");
   }
 }
-async function DeleteToWash(productId) {
+  async function DeleteToWash(productId) {
+  setBlock("block");
   let { data } = await DeleteWishlist(productId);
-  if (data?.status == "success") {
-    toast.success("Product Deleted successfully");
-    setWishlistCounter(data?.data?.length);
-    refetch();
+    if (data?.status == "success") {
+      toast.success("Product Deleted successfully");
+      setWishlistCounter(data?.data?.length);
+      await refetch();
+       await setBlock("none");
   }
 }
 function chiking() {
@@ -122,6 +134,7 @@ function chiking() {
 }
   return (
     <>
+        <BigLoader state={block} />
       <div className="col-lg-2 col-md-3 col-sm-6 position-relative my-3">
         <div className="product p-3 rounded-3 cursor-pointer">
           <i

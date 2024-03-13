@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { storeContext } from "../../context/storeContext";
 import { toast } from "react-toastify";
+import BigLoader from "../BigLoader/BigLoader";
 
 export default function Product(props) {
   let {
@@ -10,6 +11,8 @@ export default function Product(props) {
     addToWishlist,
     setWishlistCounter,
     DeleteWishlist,
+    block,
+    setBlock,
   } = useContext(storeContext);
   let [loading, setLoading] = useState(1);
   let arrIdWish = props?.arrIdWish;
@@ -39,31 +42,34 @@ export default function Product(props) {
     }
   }
   async function addToWash(productId) {
+    setBlock("block");
     let { data } = await addToWishlist(productId);
     // console.log(data);
     if (data?.status == "success") {
       toast.success("Product added successfully");
       setWishlistCounter(data?.data?.length);
-      props.refetch();
+      await props.refetch();
+      await setBlock("none");
     }
   }
   async function DeleteToWash(productId) {
+    setBlock("block");
     let { data } = await DeleteWishlist(productId);
     // console.log(data);
     if (data?.status == "success") {
       toast.success("Product Deleted successfully");
       setWishlistCounter(data?.data?.length);
-      props.refetch();
+      await props.refetch();
+      await setBlock("none");
     }
   }
   function chiking() {
     if (isOnline) {
-    if (!arrIdWish?.includes(item?._id.toString())) {
-          addToWash(item._id);
-        } else {
-          DeleteToWash(item._id);
-        }
-      
+      if (!arrIdWish?.includes(item?._id.toString())) {
+        addToWash(item._id);
+      } else {
+        DeleteToWash(item._id);
+      }
     } else {
       toast.error("You are offline now");
     }
@@ -71,6 +77,7 @@ export default function Product(props) {
 
   return (
     <>
+      <BigLoader state={block} />
       <div className="col-lg-2 col-md-3 col-sm-6 position-relative my-3">
         <div className="product p-3 rounded-3 cursor-pointer position-relative">
           <i

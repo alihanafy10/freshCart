@@ -2,10 +2,17 @@ import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { storeContext } from "../../context/storeContext";
 import { toast } from "react-toastify";
+import BigLoader from "../BigLoader/BigLoader";
 
 export default function WishlistSon(props) {
-  let { setCounter, addToCart, DeleteWishlist, setWishlistCounter } =
-    useContext(storeContext);
+  let {
+    setCounter,
+    addToCart,
+    DeleteWishlist,
+    setWishlistCounter,
+    block,
+    setBlock,
+  } = useContext(storeContext);
   let [loading, setLoading] = useState(1);
   const item = props.item;
 
@@ -32,21 +39,28 @@ export default function WishlistSon(props) {
       setLoading(1);
     }
   }
-async function DeleteToWash(productId) {
+  async function DeleteToWash(productId) {
+  setBlock("block");
   let { data } = await DeleteWishlist(productId);
   if (data?.status == "success") {
     toast.success("Product Deleted successfully");
     setWishlistCounter(data?.data?.length);
-    props.refetch();
+    await props.refetch();
+    await setBlock("none");
   }
 }
 
   return (
     <>
+      <BigLoader state={block} />
       <div className="col-lg-2 col-md-3 col-sm-6 position-relative my-3">
         <div className="product p-3 rounded-3 cursor-pointer position-relative">
           <i
-            onClick={() => {isOnline? DeleteToWash(props.item._id):toast.error('You are offline now') }}
+            onClick={() => {
+              isOnline
+                ? DeleteToWash(props.item._id)
+                : toast.error("You are offline now");
+            }}
             className="fa-solid fa-heart text-danger"
           ></i>
           <Link to={`/product-delales/${item._id}`}>

@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { storeContext } from "../../context/storeContext";
 import { toast } from "react-toastify";
+import BigLoader from "../BigLoader/BigLoader";
 
 export default function Product(props) {
   let {
@@ -10,25 +11,26 @@ export default function Product(props) {
     addToWishlist,
     setWishlistCounter,
     DeleteWishlist,
+    block,
+    setBlock,
   } = useContext(storeContext);
   let [loading, setLoading] = useState(1);
   let arrIdWish = props?.arrIdWish;
   const item = props.item;
 
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
 
-   const [isOnline, setIsOnline] = useState(navigator.onLine);
-   useEffect(() => {
-     const handleOnline = () => setIsOnline(true);
-     const handleOffline = () => setIsOnline(false);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
 
-     window.addEventListener("online", handleOnline);
-     window.addEventListener("offline", handleOffline);
-
-     return () => {
-       window.removeEventListener("online", handleOnline);
-       window.removeEventListener("offline", handleOffline);
-     };
-   }, []);
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
   async function addproductToCart(productId) {
     setLoading(0);
     let { data } = await addToCart(productId);
@@ -39,19 +41,25 @@ export default function Product(props) {
     }
   }
   async function addToWash(productId) {
+    setBlock("block");
     let { data } = await addToWishlist(productId);
+    // console.log(data);
     if (data?.status == "success") {
       toast.success("Product added successfully");
       setWishlistCounter(data?.data?.length);
-      props.refetch();
+      await props.refetch();
+      await setBlock("none");
     }
   }
   async function DeleteToWash(productId) {
+    setBlock("block");
     let { data } = await DeleteWishlist(productId);
+    // console.log(data);
     if (data?.status == "success") {
       toast.success("Product Deleted successfully");
       setWishlistCounter(data?.data?.length);
-      props.refetch();
+      await props.refetch();
+      await setBlock("none");
     }
   }
   function chiking() {
@@ -68,6 +76,7 @@ export default function Product(props) {
 
   return (
     <>
+      <BigLoader state={block} />
       <div className="col-lg-2 col-md-3 col-sm-6 position-relative my-3">
         <div className="product p-3 rounded-3 cursor-pointer position-relative">
           <i

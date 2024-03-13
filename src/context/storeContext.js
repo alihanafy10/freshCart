@@ -112,7 +112,7 @@ export default function StoreContextProvider({ children }) {
   let [loading, setLoading] = useState(1);
   let [bosLoad, setBosLoad] = useState(0);
   let [wishlistCounter, setWishlistCounter] = useState(0);
-
+  let[block,setBlock]=useState('none')
   const userId = null;
 
   return (
@@ -136,6 +136,8 @@ export default function StoreContextProvider({ children }) {
         setWishlistCounter,
         getWishlist,
         DeleteWishlist,
+        block,
+        setBlock,
       }}
     >
       {children}
