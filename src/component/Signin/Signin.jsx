@@ -127,11 +127,7 @@ export default function Signin() {
           </form>
         </div>
       </div>
-      <div
-        style={{ position: "absolute", bottom: "0", left: "0", width: "100%" }}
-      >
-        <Footer />
-      </div>
+      
     </>
   );
 }

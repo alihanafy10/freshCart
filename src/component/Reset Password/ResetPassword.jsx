@@ -62,7 +62,7 @@ export default function ResetPassword() {
 
   return (
     <>
-      <div style={{ paddingTop: "74.49px" }}>
+      <div style={{ paddingTop: "100.49px" }}>
         <div className="w-75 m-auto my-5">
           <h2>Reset Password :</h2>
           <form onSubmit={registr.handleSubmit}>
@@ -120,11 +120,6 @@ export default function ResetPassword() {
             </div>
           </form>
         </div>
-      </div>
-      <div
-        style={{ position: "absolute", bottom: "0", left: "0", width: "100%" }}
-      >
-        <Footer />
       </div>
     </>
   );

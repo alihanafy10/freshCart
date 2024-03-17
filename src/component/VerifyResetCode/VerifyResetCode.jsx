@@ -12,14 +12,18 @@ export default function ForgetPass() {
 
   const sign_in = (values) => {
     axios
-      .post("https://ecommerce.routemisr.com/api/v1/auth/verifyResetCode", values, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+      .post(
+        "https://ecommerce.routemisr.com/api/v1/auth/verifyResetCode",
+        values,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
       .then((res) => {
         setLoaderbtn(false);
-        if (res.status === 200 ) {
+        if (res.status === 200) {
           gotnewpass("/ResetPassword");
         } else {
           setErr(res?.data?.message);
@@ -33,8 +37,7 @@ export default function ForgetPass() {
 
   const validationSchema = () => {
     return Yup.object({
-      resetCode: Yup.string().min(2).max(9)
-        .required(),
+      resetCode: Yup.string().min(2).max(9).required(),
     });
   };
 
@@ -51,7 +54,7 @@ export default function ForgetPass() {
 
   return (
     <>
-      <div style={{paddingTop:'74.49px'}}>
+      <div style={{ paddingTop: "180.49px" }}>
         <div className="w-75 m-auto my-5">
           <h2>Verify Reset Code :</h2>
           <form onSubmit={registr.handleSubmit}>
@@ -93,9 +96,6 @@ export default function ForgetPass() {
             </div>
           </form>
         </div>
-      </div>
-      <div style={{ position: "absolute", bottom: "0", left: "0", width: "100%" }}>
-        <Footer />
       </div>
     </>
   );

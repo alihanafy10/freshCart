@@ -4,6 +4,7 @@ import logo from "../assets/images/freshcart-logo.svg";
 import { Link, NavLink } from "react-router-dom";
 import bground from '../assets/images/light-patten.svg'
 import SocialIcons from '../component/socialIcons/SocialIcons';
+import Footer from '../component/footer/Footer';
 export default function AuthenticationLayout() {
   return (
     <>
@@ -66,6 +67,16 @@ export default function AuthenticationLayout() {
         </div>
       </nav>
       <Outlet />
+      <div
+        style={{
+          position: "relative",
+          bottom: "-17vh",
+          left: "0",
+          width: "100%",
+        }}
+      >
+        <Footer />
+      </div>
     </>
   );
 }
