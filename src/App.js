@@ -1,6 +1,6 @@
 
 import './App.css';
-import { RouterProvider ,createBrowserRouter} from 'react-router-dom';
+import { RouterProvider ,createBrowserRouter, createHashRouter} from 'react-router-dom';
 import AuthenticationLayout from './layout/AuthenticationLayout';
 import MainLayout from './layout/MainLayout';
 import Home from './component/Home/Home';
@@ -36,7 +36,7 @@ import ScrollButton from './component/scrollBTN/ScrollButton';
 
 export default function App() {
 
-  const routes = createBrowserRouter([
+  const routes = createHashRouter([
     {
     
       path: '/', element: <BeforeRegistering />, children: [
