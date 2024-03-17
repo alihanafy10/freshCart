@@ -21,7 +21,7 @@ export default function ResetPassword() {
         setLoaderbtn(false);
         if (res.data.token) {
           localStorage.setItem("token", res.data.token);
-          gothome("/home");
+          gothome("/signin");
         }
       })
       .catch((err) => {
